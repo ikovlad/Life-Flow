@@ -51,7 +51,7 @@ if (isset($_SESSION['login_error'])) {
             <input class="textbox" type="text" name="username" id="username" placeholder="Username" required>
             <input class="textbox" type="password" name="password" id="password" placeholder="Password" required>
             <input class="stbox" type="submit" value="Log In"> <br>
-            <a href="" class="forgot-pass"> Forget Password? </a>
+            <a href="./forgot_password.php" class="forgot-pass"> Forget Password? </a>
             <p class="create-act text-white"> New to Shop Bricks? <a href="./signup.php"> Sign up</a> </p>
         </form>
     </div>
