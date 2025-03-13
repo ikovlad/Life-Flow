@@ -1,15 +1,52 @@
 <?php
 session_start();
-// If user is already logged in, redirect
-if (isset($_SESSION['user_id'])) {
-    header("Location: index.php");
+
+// Check login
+if (!isset($_SESSION['user_id'])) {
+    $_SESSION['redirect_after_login'] = 'donate.php';
+    header("Location: login.php");
     exit;
 }
 
-$error = "";
-if (isset($_SESSION['login_error'])) {
-    $error = $_SESSION['login_error'];
-    unset($_SESSION['login_error']);
+include 'db_connect.php'; // Connect to DB
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Gather form data
+    $full_name       = trim($_POST['full_name']);
+    $gender          = $_POST['gender'] ?? '';
+    $age             = trim($_POST['age']);
+    $weight          = trim($_POST['weight']);
+    $email           = trim($_POST['email']);
+    $phone           = trim($_POST['phone']);
+    $blood_type      = trim($_POST['blood_type']);
+    $medical_history = trim($_POST['medical_history']);
+
+    // Insert into donate_blood table
+    $user_id = $_SESSION['user_id'];
+    $sql = "INSERT INTO donate_blood
+            (user_id, full_name, gender, age, weight, email, phone, blood_type, medical_history)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param(
+        "issiissss",
+        $user_id,
+        $full_name,
+        $gender,
+        $age,
+        $weight,
+        $email,
+        $phone,
+        $blood_type,
+        $medical_history
+    );
+
+    if ($stmt->execute()) {
+        // Redirect on success
+        header("Location: donate.php?success=1");
+        exit;
+    } else {
+        echo "Error inserting donation record: " . $stmt->error;
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -18,43 +55,88 @@ if (isset($_SESSION['login_error'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Life Flow </title>
-    <link rel="stylesheet" href="./css/login.css">
+    <title> Donate Blood </title>
+    <link rel="stylesheet" href="./css/contact.css">
     <link rel="shortcut icon" href="./images/android-chrome-192x192.png" type="image/x-icon">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,600,0,0"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,1,200"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <script src="./js/dvalid.js"></script>
 </head>
 <body>
     <nav class="navbar container">
-        <div class="logo"> <a href="./index.html"> <img src="./images/Frame 4.png" alt="Website logo"> </a> </div>
+        <div class="logo"> <a href="./index.php"> <img src="./images/Frame 4.png" alt="Website logo"> </a> </div>
         <div class="nav-item-wrapper">
             <ul class="nav-items">
                 <li class="nav-item-1"> <a href="./index.php"> Home </a> </li>
                 <li class="nav-item-2"> <a href="./index.php#BLOG"> Blogs </a> </li>
                 <li class="nav-item-3"> <a href="./contact.php"> Need Blood </a> </li>
-                <li class="nav-item-3"> <a href=""> Donate Blood </a> </li>
+                <li class="nav-item-3"> <a href="./donate.php"> Donate Blood </a> </li>
             </ul>
         </div>
         <div class="nav-right">
-            <div> <a href="./login.php"> <button type="submit" class="login-btn primary-btn"> Login </button> </a> </div>
-            <div> <a href="./signup.php"> <button type="submit" class="sign-up-btn secondary-btn"> Sign-up </button> </a> </div>
-        </div>
+        <?php if (isset($_SESSION['user_id'])): ?>
+            <!-- Logged in: show Profile and Logout in the same style as before -->
+            <div>
+                <a href="profile.php">
+                    <button type="submit" class="login-btn primary-btn">Profile</button>
+                </a>
+            </div>
+            <div>
+                <a href="logout.php">
+                    <button type="submit" class="sign-up-btn secondary-btn">Logout</button>
+                </a>
+            </div>
+        <?php else: ?>
+            <!-- Not logged in: show Login and Sign-up in the same style as before -->
+            <div>
+                <a href="login.php">
+                    <button type="submit" class="login-btn primary-btn">Login</button>
+                </a>
+            </div>
+            <div>
+                <a href="signup.php">
+                    <button type="submit" class="sign-up-btn secondary-btn">Sign-up</button>
+                </a>
+            </div>
+        <?php endif; ?>
+    </div>
     </nav>
 
-    <div class="form-box form-wrap-1">
-        <div class="bttn">
-            <span class="tgl-bttn text-white"> LOGIN </span>
+    <section class="contact d-contact container">
+        <h1 class="contact-heading"> Donate Blood </h1>
+        <div class="c-wrap d-wrap">
+             <form action="donate.php" method="POST" enctype="multipart/form-data" class="contact-form">
+                <p class="c-text"> Please fill each and every information correctly: </p>
+                <p class="c-text"> Full Name: </p>
+                <input type="text" id="fname" name="full_name" required class="c-input">
+                <p class="c-text gender"> Gender: </p>
+                
+                <input type="radio" name="gender" id="male" value="Male">
+                <label for="male" class="c-text"> Male </label>
+                <input type="radio" name="gender" id="female" value="Female">
+                <label for="female" class="c-text"> Female </label>
+                <input type="radio" name="gender" id="others" value="Others">
+                <label for="others" class="c-text"> Others </label>
+                
+                <p class="c-text"> Enter your age: </p>
+                <input type="text" id="fage" name="age" required class="c-input">
+                <p class="c-text"> Enter your current weight: </p>
+                <input type="text" id="fweight" name="weight" required class="c-input">
+                <p class="c-text"> E-mail: </p>
+                <input type="email" id="femail" name="email" required class="c-input">
+                <p class="c-text"> Phone no: </p>
+                <input type="text" id="fphone" name="phone" required class="c-input">
+                <p class="c-text"> Blood Type: </p>
+                <input type="text" id="ftype" name="blood_type" required class="c-input">
+                <p class="c-text"> Please specify whether you are suffering from any disease or if you previously have suffered: </p>
+                <textarea id="fdetails" name="medical_history" cols="50" rows="10"></textarea>
+                <p class="c-text"> Please provide a valid ID proof: </p>
+                <input type="file" name="id_proof" id="">
+                <button type="submit" class="dBtn"> Submit </button>
         </div>
-        <form action="./login_action.php" method="POST">
-            <input class="textbox" type="text" name="username" id="username" placeholder="Username" required>
-            <input class="textbox" type="password" name="password" id="password" placeholder="Password" required>
-            <input class="stbox" type="submit" value="Log In"> <br>
-            <a href="" class="forgot-pass"> Forget Password? </a>
-            <p class="create-act text-white"> New to Shop Bricks? <a href="./signup.php"> Sign up</a> </p>
-        </form>
-    </div>
+	</section>
 
     <section class="footer">
         <div class="foot-wrap container">
@@ -71,7 +153,7 @@ if (isset($_SESSION['login_error'])) {
                             </a> 
                         </div>
                         <div> 
-                            <a href="./donate.php" target="_blank"> 
+                            <a href="" target="_blank"> 
                                 <div class="footer-link-wrapper"> 
                                     <span class="material-symbols-outlined"> chevron_right </span> 
                                     <span class="footer-link-text"> Donate </span> 
@@ -85,7 +167,7 @@ if (isset($_SESSION['login_error'])) {
                                     <span class="footer-link-text"> Contact Us </span> 
                                 </div>
                             </a>
-                        </div>
+                        </div> 
                     </div>
                     <div class="imp-links-wrapper">
                         <h3 class="imp-links"> Important Links </h3>
@@ -126,17 +208,11 @@ if (isset($_SESSION['login_error'])) {
             </div>
             <hr class="foot-breaker">
             <div class="right-text-wrap container">
-                <div class="foot-l-text"> "One drop can save many lives" </div>
+                <div class="foot-l-text"> "Be the flow that saves lives" </div>
                 <div> <button type="submit" class="login-btn primary-btn"> Donate </button> </div>
             </div>
         </div>
-        <p class="container cr-text"> Life Flow  &copy; &nbsp; | &nbsp ikovlad &nbsp | &nbsp; All rights reserved </p> 
+        <p class="container cr-text"> Life Flow &copy; &nbsp; | &nbsp ikovlad &nbsp | &nbsp; All rights reserved </p> 
     </section>
-
-    <script>
-        function fun1(){
-            alert("Your appointment has been booked..! Please visit nearest one blood center to donate your blood");
-        }
-    </script>
 </body>
 </html>

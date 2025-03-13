@@ -1,3 +1,33 @@
+<?php
+session_start();
+include 'db_connect.php';
+
+// (Optional) Show all errors for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = trim($_POST['username']);
+    $email    = trim($_POST['email']);
+    // Use password_hash for secure password storage
+    $password = password_hash(trim($_POST['password']), PASSWORD_DEFAULT);
+
+    // Insert a normal user (is_admin=0)
+    $sql  = "INSERT INTO users (username, email, password, is_admin)
+             VALUES (?, ?, ?, 0)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sss", $username, $email, $password);
+
+    if ($stmt->execute()) {
+        // Registration successful → go to login
+        header("Location: login.php");
+        exit;
+    } else {
+        // Show any DB errors
+        echo "Error: " . $stmt->error;
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,31 +44,31 @@
 </head>
 <body>
     <nav class="navbar container">
-        <div class="logo"> <a href="./index.html"> <img src="./images/Frame 4.png" alt="Website logo"> </a> </div>
+        <div class="logo"> <a href="./index.php"> <img src="./images/Frame 4.png" alt="Website logo"> </a> </div>
         <div class="nav-item-wrapper">
             <ul class="nav-items">
-                <li class="nav-item-1"> <a href="./index.html"> Home </a> </li>
-                <li class="nav-item-2"> <a href="./index.html#BLOG"> Blogs </a> </li>
-                <li class="nav-item-3"> <a href="./contact.html"> Need Blood </a> </li>
-                <li class="nav-item-3"> <a href=""> Donate Blood </a> </li>
+                <li class="nav-item-1"> <a href="./index.php"> Home </a> </li>
+                <li class="nav-item-2"> <a href="./index.php#BLOG"> Blogs </a> </li>
+                <li class="nav-item-3"> <a href="./contact.php"> Need Blood </a> </li>
+                <li class="nav-item-3"> <a href="./donate.php"> Donate Blood </a> </li>
             </ul>
         </div>
         <div class="nav-right">
-            <div> <a href="./login.html"> <button type="submit" class="login-btn primary-btn"> Login </button> </a> </div>
-            <div> <a href="./signup.html"> <button type="submit" class="sign-up-btn secondary-btn"> Sign-up </button> </a> </div>
+            <div> <a href="./login.php"> <button type="submit" class="login-btn primary-btn"> Login </button> </a> </div>
+            <div> <a href="./signup.php"> <button type="submit" class="sign-up-btn secondary-btn"> Sign-up </button> </a> </div>
         </div>
     </nav>
 
-    <div class="form-box form-wrap-1">
+    <div class="form-box form-wrap-2">
         <div class="bttn">
-            <span class="tgl-bttn text-white"> LOGIN </span>
+            <span class="tgl-bttn text-white"> REGISTER </span>
         </div>
-        <form action="./index.html">
+        <form action="./signup.php" method="POST"> 
+            <input class="textbox" type="email" name="email" id="email" placeholder="Email" required>
             <input class="textbox" type="text" name="username" id="username" placeholder="Username" required>
             <input class="textbox" type="password" name="password" id="password" placeholder="Password" required>
-            <input class="stbox" type="submit" value="Log In"> <br>
-            <a href="" class="forgot-pass"> Forget Password? </a>
-            <p class="create-act text-white"> New to Shop Bricks? <a href="./signup.html"> Sign up</a> </p>
+            <input class="stbox" type="submit" value="Register">
+            <p class="accept-tandc text-white" > <input type="radio" name="tandc" id="tandc" required> I accept all Terms and Condition</p> 
         </form>
     </div>
 
@@ -57,7 +87,7 @@
                             </a> 
                         </div>
                         <div> 
-                            <a href="" target="_blank"> 
+                            <a href="./donate.php" target="_blank"> 
                                 <div class="footer-link-wrapper"> 
                                     <span class="material-symbols-outlined"> chevron_right </span> 
                                     <span class="footer-link-text"> Donate </span> 
@@ -65,7 +95,7 @@
                             </a>
                         </div>
                         <div> 
-                            <a href="./contact.html" target="_blank"> 
+                            <a href="./contact.php" target="_blank"> 
                                 <div class="footer-link-wrapper"> 
                                     <span class="material-symbols-outlined"> chevron_right </span> 
                                     <span class="footer-link-text"> Contact Us </span> 
@@ -116,7 +146,7 @@
                 <div> <button type="submit" class="login-btn primary-btn"> Donate </button> </div>
             </div>
         </div>
-        <p class="container cr-text"> Life Flow  &copy; &nbsp; | &nbsp ikovlad &nbsp | &nbsp; All rights reserved </p> 
+        <p class="container cr-text">Life Flow &copy; &nbsp; | &nbsp  ikovlad   &nbsp | &nbsp; All rights reserved </p> 
     </section>
 
     <script>
