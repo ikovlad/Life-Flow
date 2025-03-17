@@ -44,7 +44,7 @@ session_start();
                 </a>
             </div>
             <div>
-                <a href="login.php">
+                <a href="logout.php">
                     <button type="submit" class="sign-up-btn secondary-btn">Logout</button>
                 </a>
             </div>
@@ -215,7 +215,7 @@ session_start();
                     <div class="imp-links-wrapper">
                         <h3 class="imp-links">Important Links</h3>
                         <div> 
-                            <a href="#" target="_blank"> 
+                            <a href="https://privacy.gov.ph/data-privacy-act/" target="_blank"> 
                                 <div class="footer-link-wrapper"> 
                                     <span class="material-symbols-outlined"> chevron_right </span> 
                                     <span class="footer-link-text">Privacy</span> 
@@ -223,7 +223,7 @@ session_start();
                             </a> 
                         </div>
                         <div> 
-                            <a href="#" target="_blank"> 
+                            <a href="https://www.cookielawinfo.com/cookie-law/" target="_blank"> 
                                 <div class="footer-link-wrapper"> 
                                     <span class="material-symbols-outlined"> chevron_right </span> 
                                     <span class="footer-link-text">Cookies</span> 
@@ -231,7 +231,7 @@ session_start();
                             </a>
                         </div>
                         <div> 
-                            <a href="#" target="_blank"> 
+                            <a href="./terms_conditions.php" target="_blank"> 
                                 <div class="footer-link-wrapper"> 
                                     <span class="material-symbols-outlined"> chevron_right </span> 
                                     <span class="footer-link-text">Terms and Conditions</span> 

@@ -115,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <p class="c-text"> Please provide your address: </p>
                 <textarea name="fdetails" id="fdetails" cols="50" rows="10"></textarea>
                 <p class="c-text"> Please provide a valid ID proof which will be checked before delivery: </p>
-                <input type="file" name="id_proof" id="id_proof">
+                <input type="file" name="id_proof" id="id_proof" required class="c-input">
                 <button type="submit" class="submitBtn" onclick="rValidate()"> Submit </button>
             </>
         </div>
