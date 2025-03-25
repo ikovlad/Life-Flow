@@ -18,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (password_verify($password, $row['password'])) {
             $_SESSION['user_id'] = $row['id'];
 
-            // Check redirect_after_login
             if (isset($_SESSION['redirect_after_login'])) {
                 $redirectPage = $_SESSION['redirect_after_login'];
                 unset($_SESSION['redirect_after_login']);
@@ -29,13 +28,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit;
             }
         } else {
-            // Wrong password
             $_SESSION['login_error'] = "Invalid username or password.";
             header("Location: login.php");
             exit;
         }
     } else {
-        // No such user
         $_SESSION['login_error'] = "Invalid username or password.";
         header("Location: login.php");
         exit;

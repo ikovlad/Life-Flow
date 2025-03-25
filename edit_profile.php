@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// 1) Ensure the user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
@@ -9,28 +8,22 @@ if (!isset($_SESSION['user_id'])) {
 
 include('db_connect.php');
 
-// 2) Identify which user is editing their profile
 $user_id = $_SESSION['user_id'];
 $error = "";
 
-// 3) If the form was submitted, update the DB
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $new_username = trim($_POST['username']);
     $new_email    = trim($_POST['email']);
-    $new_password = trim($_POST['password'] ?? ''); // might be empty
+    $new_password = trim($_POST['password'] ?? ''); 
 
-    // Optional: Validate or sanitize these fields as needed
 
-    // 4) Update username/email
     $stmt = $conn->prepare("UPDATE users SET username = ?, email = ? WHERE id = ?");
     $stmt->bind_param("ssi", $new_username, $new_email, $user_id);
 
     if (!$stmt->execute()) {
         $error = "Error updating profile: " . $stmt->error;
     } else {
-        // 5) If user typed a new password, update it too
         if (!empty($new_password)) {
-            // Hash the new password
             $hashed = password_hash($new_password, PASSWORD_DEFAULT);
             
             $stmtPass = $conn->prepare("UPDATE users SET password = ? WHERE id = ?");
@@ -40,7 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
         
-        // If no errors so far, redirect to profile
         if (empty($error)) {
             header("Location: profile.php?updated=1");
             exit;
@@ -48,7 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// 6) Fetch the current username/email to populate the form
 $stmt = $conn->prepare("SELECT username, email FROM users WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -59,12 +50,10 @@ $user = $result->fetch_assoc();
 <html>
 <head>
     <title>Edit Profile</title>
-    <!-- Use the same CSS you used for login/profile pages -->
     <link rel="stylesheet" href="./css/login.css">
 </head>
 <body>
 
-<!-- (Optional) Include a navbar if you like -->
 <nav class="navbar container">
     <div class="logo">
         <a href="index.php">
@@ -100,7 +89,6 @@ $user = $result->fetch_assoc();
         <p style="color:red;"><?= $error ?></p>
     <?php endif; ?>
 
-    <!-- 7) The edit form -->
     <form action="edit_profile.php" method="POST" style="font-size:1.4rem;">
         <div style="margin-bottom:1.5rem;">
             <label for="username" style="display:block; margin-bottom:0.5rem;">Username:</label>
@@ -126,7 +114,6 @@ $user = $result->fetch_assoc();
             >
         </div>
 
-        <!-- 8) New Password field (optional) -->
         <div style="margin-bottom:1.5rem;">
             <label for="password" style="display:block; margin-bottom:0.5rem;">New Password (leave blank if no change):</label>
             <input

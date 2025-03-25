@@ -58,11 +58,9 @@ session_start();
         </div>
     </nav>
 
-                    <!-- MAIN CONTENT: Terms and Conditions -->
     <section class="container" style="margin-top: 3rem; margin-bottom: 3rem;">
         <h1 style="font-size: 3rem; margin-bottom: 2rem;">Terms and Conditions</h1>
-        
-        <!-- Introduction -->
+
         <p style="font-size: 1.4rem; line-height: 1.6;">
             Welcome to Life Flow. These terms and conditions outline the rules and regulations for the use of
             our website, located at <strong>www.lifeflow.com</strong>. By accessing this website, we assume you
@@ -70,7 +68,6 @@ session_start();
             take all of the terms and conditions stated on this page.
         </p>
 
-        <!-- Terminology -->
         <p style="font-size: 1.4rem; line-height: 1.6;">
             The following terminology applies to these Terms and Conditions, our Privacy Statement, and all Agreements:
             “Client,” “You,” and “Your” refers to you, the person logging on this website and compliant with the
@@ -78,7 +75,6 @@ session_start();
             Company, Life Flow. “Party,” “Parties,” or “Us,” refers to both the Client and ourselves.
         </p>
 
-        <!-- Use of Website -->
         <h2 style="font-size: 2rem; margin: 2rem 0 1rem;">Use of the Website</h2>
         <p style="font-size: 1.4rem; line-height: 1.6;">
             By using this website, you warrant that you are at least 18 years of age and that you will not use
@@ -87,7 +83,6 @@ session_start();
             false information may result in the termination of your account and access to our services.
         </p>
 
-        <!-- Privacy and Data Protection -->
         <h2 style="font-size: 2rem; margin: 2rem 0 1rem;">Privacy and Data Protection</h2>
         <p style="font-size: 1.4rem; line-height: 1.6;">
             We are committed to protecting your privacy. Please review our <a href="https://privacy.gov.ph/data-privacy-act/" target="_blank">Privacy Policy</a> for
@@ -95,7 +90,6 @@ session_start();
             to the processing of your personal data as described therein.
         </p>
 
-        <!-- Cookies -->
         <h2 style="font-size: 2rem; margin: 2rem 0 1rem;">Cookies</h2>
         <p style="font-size: 1.4rem; line-height: 1.6;">
             We employ the use of cookies. By accessing Life Flow, you agreed to use cookies in agreement with our
@@ -104,7 +98,6 @@ session_start();
             to make it easier for people visiting our website.
         </p>
 
-        <!-- Intellectual Property Rights -->
         <h2 style="font-size: 2rem; margin: 2rem 0 1rem;">Intellectual Property Rights</h2>
         <p style="font-size: 1.4rem; line-height: 1.6;">
             Unless otherwise stated, Life Flow and/or its licensors own the intellectual property rights for all
@@ -112,7 +105,6 @@ session_start();
             for your own personal use, subject to restrictions set in these terms and conditions.
         </p>
 
-        <!-- User Accounts -->
         <h2 style="font-size: 2rem; margin: 2rem 0 1rem;">User Accounts</h2>
         <p style="font-size: 1.4rem; line-height: 1.6;">
             If you create an account on our website, you are responsible for maintaining the security of your
@@ -120,7 +112,6 @@ session_start();
             remove content, and cancel orders at our sole discretion.
         </p>
 
-        <!-- Limitations of Liability -->
         <h2 style="font-size: 2rem; margin: 2rem 0 1rem;">Limitations of Liability</h2>
         <p style="font-size: 1.4rem; line-height: 1.6;">
             In no event shall Life Flow or its suppliers be liable for any damages arising out of the use or
@@ -128,7 +119,6 @@ session_start();
             has been notified orally or in writing of the possibility of such damage.
         </p>
 
-        <!-- Indemnification -->
         <h2 style="font-size: 2rem; margin: 2rem 0 1rem;">Indemnification</h2>
         <p style="font-size: 1.4rem; line-height: 1.6;">
             You agree to indemnify and hold harmless Life Flow, its officers, directors, employees, and agents,
@@ -136,7 +126,6 @@ session_start();
             your use of the site, including but not limited to your violation of these Terms and Conditions.
         </p>
 
-        <!-- Changes to Terms -->
         <h2 style="font-size: 2rem; margin: 2rem 0 1rem;">Changes to Terms</h2>
         <p style="font-size: 1.4rem; line-height: 1.6;">
             We reserve the right to revise these Terms and Conditions at any time. By using this website, you
@@ -144,7 +133,6 @@ session_start();
             terms and conditions governing use of this website.
         </p>
 
-        <!-- Governing Law & Jurisdiction -->
         <h2 style="font-size: 2rem; margin: 2rem 0 1rem;">Governing Law & Jurisdiction</h2>
         <p style="font-size: 1.4rem; line-height: 1.6;">
             These Terms will be governed by and interpreted in accordance with the laws of [Your Country/State],
@@ -152,7 +140,6 @@ session_start();
             the resolution of any disputes.
         </p>
 
-        <!-- Contact -->
         <h2 style="font-size: 2rem; margin: 2rem 0 1rem;">Contact Us</h2>
         <p style="font-size: 1.4rem; line-height: 1.6;">
             If you have any questions about these Terms, please contact us at
@@ -164,8 +151,6 @@ session_start();
         </p>
     </section>
 
-
-    <!-- FOOTER (copied from index.php) -->
     <section class="footer">
         <div class="foot-wrap container">
             <div class="left-items-wrap">

@@ -263,21 +263,16 @@ session_start();
 </body>
 <script>
     function googleMapsSearch() {
-        // 1) Get the user’s input
         var query = document.getElementById("search-box").value.trim();
-        // 2) If empty, do nothing or show alert
         if (!query) {
             alert("Please enter a city or location to search.");
             return false;
         }
-        // 3) Build the Google Maps URL
-        // "blood banks near" + user’s query
+
         var mapsUrl = "https://www.google.com/maps/search/blood+banks+near+" + encodeURIComponent(query);
 
-        // 4) Open in a new tab
         window.open(mapsUrl, "_blank");
 
-        // 5) Prevent normal form submission
         return false;
     }
 </script>

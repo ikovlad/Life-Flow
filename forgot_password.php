@@ -1,36 +1,29 @@
 <?php
 session_start();
 
-// If user is already logged in, no need to see this page
 if (isset($_SESSION['user_id'])) {
     header("Location: index.php");
     exit;
 }
 
-include 'db_connect.php'; // Your database connection
+include 'db_connect.php'; 
 
 $message = "";
 
-// 1) If the form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email']);
 
     if (!empty($email)) {
-        // 2) Check if the email exists in the 'users' table
         $stmt = $conn->prepare("SELECT id FROM users WHERE email = ? LIMIT 1");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($result && $result->num_rows === 1) {
-            // 3) Generate a random temporary password
-            $tempPassword = bin2hex(random_bytes(4)); // 8 hex chars, e.g. "a3f0b1c9"
-            // or something like: $tempPassword = substr(str_shuffle("ABCDEFGHJKLMNPQRSTUVWXYZ23456789"), 0, 8);
+            $tempPassword = bin2hex(random_bytes(4)); 
 
-            // 4) Hash the temporary password
             $hashed = password_hash($tempPassword, PASSWORD_DEFAULT);
 
-            // 5) Update the user’s password in DB
             $row = $result->fetch_assoc();
             $userId = $row['id'];
 
@@ -38,12 +31,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $updateStmt->bind_param("si", $hashed, $userId);
 
             if ($updateStmt->execute()) {
-                // 6) Email the user their new password
                 $subject = "Your Temporary Password";
                 $body    = "Hello,\n\nWe have reset your password. Your temporary password is: {$tempPassword}\n\n".
                            "Please log in with this password, then go to your Profile to change it.\n\n".
                            "Regards,\nLife Flow Team";
-                $headers = "From: lifeflow@example.com\r\n"; // Adjust as needed
+                $headers = "From: lifeflow@example.com\r\n"; 
 
                 if (mail($email, $subject, $body, $headers)) {
                     $message = "A temporary password has been sent to your email. Please check your inbox.";
@@ -54,7 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $message = "Error updating password in the database.";
             }
         } else {
-            // Email not found
             $message = "No account found with that email address.";
         }
     } else {
@@ -104,7 +95,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <section class="footer">
         <div class="foot-wrap container">
-            <!-- ... your footer content ... -->
         </div>
         <p class="container cr-text">Life Flow &copy; &nbsp; | &nbsp; ikovlad &nbsp; | &nbsp; All rights reserved</p>
     </section>

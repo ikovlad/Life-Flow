@@ -1,17 +1,15 @@
 <?php
 session_start();
 
-// If user is not logged in, redirect them to login
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['redirect_after_login'] = 'contact.php';
     header("Location: login.php");
     exit;
 }
 
-include 'db_connect.php'; // Make sure this file connects to your DB
+include 'db_connect.php'; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // 1) Grab form data
     $fname     = trim($_POST['fname']);
     $gender    = $_POST['gender'] ?? '';
     $email     = trim($_POST['femail']);
@@ -19,15 +17,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $bloodtype = trim($_POST['ftype']);
     $address   = trim($_POST['fdetails']);
 
-    // 2) Insert into the need_blood table
-    $user_id = $_SESSION['user_id']; // The currently logged-in user
+    $user_id = $_SESSION['user_id']; 
     $sql = "INSERT INTO need_blood (user_id, full_name, gender, email, phone, blood_type, address)
             VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("issssss", $user_id, $fname, $gender, $email, $phone, $bloodtype, $address);
 
     if ($stmt->execute()) {
-        // 3) Optional: Redirect or show success message
         header("Location: contact.php?success=1");
         exit;
     } else {
@@ -63,7 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
             <div class="nav-right">
         <?php if (isset($_SESSION['user_id'])): ?>
-            <!-- Logged in: show Profile and Logout in the same style as before -->
             <div>
                 <a href="profile.php">
                     <button type="submit" class="login-btn primary-btn">Profile</button>
@@ -75,7 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </a>
             </div>
         <?php else: ?>
-            <!-- Not logged in: show Login and Sign-up in the same style as before -->
             <div>
                 <a href="login.php">
                     <button type="submit" class="login-btn primary-btn">Login</button>
@@ -136,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </a> 
                         </div>
                         <div> 
-                            <a href="./donate.html" target="_blank">  
+                            <a href="./donate.php" target="_blank">  
                                 <div class="footer-link-wrapper"> 
                                     <span class="material-symbols-outlined"> chevron_right </span> 
                                     <span class="footer-link-text"> Donate </span> 

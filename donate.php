@@ -1,17 +1,15 @@
 <?php
 session_start();
 
-// Check login
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['redirect_after_login'] = 'donate.php';
     header("Location: login.php");
     exit;
 }
 
-include 'db_connect.php'; // Connect to DB
+include 'db_connect.php'; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Gather form data
     $full_name       = trim($_POST['full_name']);
     $gender          = $_POST['gender'] ?? '';
     $age             = trim($_POST['age']);
@@ -21,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $blood_type      = trim($_POST['blood_type']);
     $medical_history = trim($_POST['medical_history']);
 
-    // Insert into donate_blood table
     $user_id = $_SESSION['user_id'];
     $sql = "INSERT INTO donate_blood
             (user_id, full_name, gender, age, weight, email, phone, blood_type, medical_history)
@@ -41,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     );
 
     if ($stmt->execute()) {
-        // Redirect on success
         header("Location: donate.php?success=1");
         exit;
     } else {
@@ -77,7 +73,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div class="nav-right">
         <?php if (isset($_SESSION['user_id'])): ?>
-            <!-- Logged in: show Profile and Logout in the same style as before -->
             <div>
                 <a href="profile.php">
                     <button type="submit" class="login-btn primary-btn">Profile</button>
@@ -89,7 +84,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </a>
             </div>
         <?php else: ?>
-            <!-- Not logged in: show Login and Sign-up in the same style as before -->
             <div>
                 <a href="login.php">
                     <button type="submit" class="login-btn primary-btn">Login</button>

@@ -88,6 +88,25 @@ form a:hover{
     margin: 1rem;
 }
 
+.profile-container {
+    /* Increase overall width */
+    max-width: 80rem; /* 80rem ~ 1280px */
+    margin: 4rem auto;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 0.5rem;
+
+    /* If you want slightly bigger text: */
+    font-size: 1.1rem;
+}
+
+/* You can also add media queries for responsiveness, for example: */
+@media (max-width: 768px) {
+    .profile-container {
+        max-width: 90%;
+        padding: 1rem;
+    }
+}
 /* .......................... Media Queries .......................... */
 
 @media screen and (max-width: 580px) {

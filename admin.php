@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Only admins can view
 if (!isset($_SESSION['admin_logged_in'])) {
     header("Location: admin_login.php");
     exit;
@@ -9,7 +8,6 @@ if (!isset($_SESSION['admin_logged_in'])) {
 
 include('db_connect.php');
 
-// 1) Remove a user
 if (isset($_GET['delete_user'])) {
     $user_id = intval($_GET['delete_user']);
     $conn->query("DELETE FROM users WHERE id = $user_id");
@@ -17,7 +15,6 @@ if (isset($_GET['delete_user'])) {
     exit;
 }
 
-// 2) Remove a Need Blood submission
 if (isset($_GET['remove_need_id'])) {
     $need_id = intval($_GET['remove_need_id']);
     $conn->query("DELETE FROM need_blood WHERE id = $need_id");
@@ -25,7 +22,6 @@ if (isset($_GET['remove_need_id'])) {
     exit;
 }
 
-// 3) Remove a Donate Blood submission
 if (isset($_GET['remove_donate_id'])) {
     $donate_id = intval($_GET['remove_donate_id']);
     $conn->query("DELETE FROM donate_blood WHERE id = $donate_id");
@@ -33,11 +29,9 @@ if (isset($_GET['remove_donate_id'])) {
     exit;
 }
 
-// 4) Fetch admins, normal users
 $admins       = $conn->query("SELECT id, username, email FROM users WHERE is_admin=1");
 $normal_users = $conn->query("SELECT id, username, email FROM users WHERE is_admin=0");
 
-// 5) Fetch Need Blood + Donate Blood
 $needRequests   = $conn->query("SELECT * FROM need_blood ORDER BY created_at DESC");
 $donateRequests = $conn->query("SELECT * FROM donate_blood ORDER BY created_at DESC");
 ?>
@@ -45,7 +39,7 @@ $donateRequests = $conn->query("SELECT * FROM donate_blood ORDER BY created_at D
 <html>
 <head>
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="./css/admin.css"> <!-- your admin CSS -->
+    <link rel="stylesheet" href="./css/admin.css"> 
 </head>
 <body>
     <nav class="navbar container">
@@ -65,7 +59,6 @@ $donateRequests = $conn->query("SELECT * FROM donate_blood ORDER BY created_at D
     <div class="container">
         <h1>Welcome, Admin</h1>
         
-        <!-- Manage Admins -->
         <h2>Manage Admins</h2>
         <table>
             <tr>
@@ -86,7 +79,6 @@ $donateRequests = $conn->query("SELECT * FROM donate_blood ORDER BY created_at D
             <?php } ?>
         </table>
 
-        <!-- Manage Users -->
         <h2>Manage Users</h2>
         <table>
             <tr>
@@ -107,7 +99,6 @@ $donateRequests = $conn->query("SELECT * FROM donate_blood ORDER BY created_at D
             <?php } ?>
         </table>
         
-        <!-- Need Blood Submissions -->
         <h2>Need Blood Submissions</h2>
         <table>
             <tr>
@@ -142,7 +133,6 @@ $donateRequests = $conn->query("SELECT * FROM donate_blood ORDER BY created_at D
             <?php } ?>
         </table>
 
-        <!-- Donate Blood Submissions -->
         <h2>Donate Blood Submissions</h2>
         <table>
             <tr>
